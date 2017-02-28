@@ -12,16 +12,18 @@ class CreateBorrowerTable extends Migration
      */
     public function up()
     {
-        Schema::table('borrower', function (Blueprint $table) {
+        Schema::create('borrower', function(Blueprint $table)
+        {
             $table->increments('card_id');
-            $table->string('ssn', 9);
+            $table->string('ssn', 9)->unique();
             $table->string('bname');
             $table->string('email', 254);
             $table->string('address');
             $table->string('city');
             $table->string('state');
             $table->string('phone');
-            $table->unique('ssn');
+        });
+        Schema::table('borrower', function (Blueprint $table) {
             $table->index('bname');
             $table->index('phone');
         });
