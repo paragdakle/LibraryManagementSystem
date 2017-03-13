@@ -15,11 +15,11 @@ class CreateBookTable extends Migration
         Schema::create('book', function(Blueprint $table)
         {
             $table->string('isbn', 10);
-            $table->string('isbn13', 13)->unique();
-            $table->string('title');
-            $table->string('cover');
-            $table->string('publisher');
-            $table->integer('pages');
+            $table->string('isbn13', 13)->unique()->nullable(false);
+            $table->string('title')->nullable(false);
+            $table->string('cover')->nullable()->default(null);
+            $table->string('publisher')->nullable()->default(null);
+            $table->integer('pages')->nullable(false)->default(0);
             $table->primary('isbn');
         });
         Schema::table('book', function (Blueprint $table) {

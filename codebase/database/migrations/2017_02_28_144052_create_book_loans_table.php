@@ -17,9 +17,9 @@ class CreateBookLoansTable extends Migration
             $table->increments('loan_id');
             $table->string('isbn', 10);
             $table->integer('card_id')->unsigned();
-            $table->bigInteger('data_out');
-            $table->bigInteger('due_date');
-            $table->bigInteger('data_in');
+            $table->bigInteger('date_out')->nullable(false);
+            $table->bigInteger('due_date')->nullable(false);
+            $table->bigInteger('date_in')->nullable()->default(null);
             $table->foreign('isbn')->references('isbn')->on('book');
             $table->foreign('card_id')->references('card_id')->on('borrower');
         });

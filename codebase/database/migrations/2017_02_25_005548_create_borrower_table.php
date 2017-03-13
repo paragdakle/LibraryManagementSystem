@@ -15,13 +15,13 @@ class CreateBorrowerTable extends Migration
         Schema::create('borrower', function(Blueprint $table)
         {
             $table->increments('card_id');
-            $table->string('ssn', 9)->unique();
-            $table->string('bname');
-            $table->string('email', 254);
-            $table->string('address');
-            $table->string('city');
-            $table->string('state');
-            $table->string('phone');
+            $table->string('ssn', 9)->unique()->nullable(false);
+            $table->string('bname')->nullable(false);
+            $table->string('email', 254)->nullable()->default(null);
+            $table->string('address')->nullable()->default(null);
+            $table->string('city')->nullable()->default(null);
+            $table->string('state')->nullable()->default(null);
+            $table->string('phone')->nullable(false);
         });
         Schema::table('borrower', function (Blueprint $table) {
             $table->index('bname');

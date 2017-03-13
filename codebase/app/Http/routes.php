@@ -15,4 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/book/{pageNumber}', 'BookController@getBooks');
+//Book Controller Routes
+Route::get('/book', 'BookController@getBooks');
+
+Route::get('/book/search', 'BookController@searchBooks');
+
+Route::post('/book/loan', 'BookController@loanBook');

@@ -15,8 +15,9 @@ class CreateFinesTable extends Migration
         Schema::create('fines', function(Blueprint $table)
         {
             $table->integer('loan_id')->unsigned();
-            $table->integer('fine_amt')->unsigned();
-            $table->boolean('paid');
+            $table->decimal('fine_amt', 7, 2)->unsigned()->nullable(false);
+            $table->boolean('paid')->default(false);
+            $table->bigInteger('date_paid')->nullable()->default(null);
             $table->primary('loan_id');
             $table->foreign('loan_id')->references('loan_id')->on('book_loans');
         });
