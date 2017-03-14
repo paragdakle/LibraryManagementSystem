@@ -20,6 +20,7 @@ class CreateBookTable extends Migration
             $table->string('cover')->nullable()->default(null);
             $table->string('publisher')->nullable()->default(null);
             $table->integer('pages')->nullable(false)->default(0);
+            $table->integer('copies_avl')->unsigned()->default(1);
             $table->primary('isbn');
         });
         Schema::table('book', function (Blueprint $table) {

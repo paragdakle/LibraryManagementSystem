@@ -21,3 +21,5 @@ Route::get('/book', 'BookController@getBooks');
 Route::get('/book/search', 'BookController@searchBooks');
 
 Route::post('/book/loan', 'BookController@loanBook');
+
+Route::post('/book/return', 'BookController@returnBooks');
