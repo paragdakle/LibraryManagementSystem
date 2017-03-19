@@ -46,6 +46,28 @@ class BookController extends Controller
         }
     }
 
+    public function getBooksView(Request $request) {
+        $pageNumber = 1;
+        if(array_key_exists('page', $request->input())) {
+            $pageNumber = $request->input('page');
+        }
+        $response = $this->getBooks($request);
+        $response = json_decode($response->content(), TRUE);
+        return view('books', ['page_number' => $pageNumber, 'results' => $response['data']]);
+    }
+
+    public function getBookView(Request $request) {
+        if(array_key_exists('isbn', $request->input())) {
+            $isbn = $request->input('isbn');
+            $book = Book::where('isbn', $isbn)->first();
+            if($book) {
+                $loan_history = BookLoan::where('isbn', $isbn)->orderBy('date_out')->get();
+                $book->loan_history = $loan_history;
+                return view('book', ['result' => $book]);
+            }
+        }
+    }
+
     public function searchBooks(Request $request) 
     {
         $searchTerm = $request->input('term');
@@ -76,6 +98,55 @@ class BookController extends Controller
         {
             return CommonMethods::generateErrorResponseWithArray("Internal Server Error", Config::get('errorcodes.HTTP_INTERNAL_SERVER_ERROR'));
         }   
+    }
+
+    public function searchLoans(Request $request) 
+    {
+        $searchTerm = $request->input('term');
+        $pageNumber = 1;
+        if($request->input('page')) {
+            $pageNumber = $request->input('page');
+        }
+        $startRecordNumber = Config::get('constants.book_page_size') * ($pageNumber - 1);
+        $endRecordNumber = $startRecordNumber + Config::get('constants.book_page_size');
+        try {
+            $records = DB::table('book_loans as bl')
+                ->join('borrower as b', 'bl.card_id', '=', 'b.card_id')
+                ->select('bl.*', 'b.bname')
+                ->whereNull('bl.date_in')
+                ->where(function($query) use($searchTerm) {
+                    $query->where('bl.card_id', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('bl.isbn', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('b.bname', 'like', '%' . $searchTerm . '%');
+                })
+                ->orderBy('b.bname', 'asc')
+                ->limit(Config::get('constants.book_page_size'))
+                ->skip($startRecordNumber)
+                ->get();
+            return CommonMethods::generateSuccessResponse($records);
+        }
+        catch(Exception $e)
+        {
+            return CommonMethods::generateErrorResponseWithArray("Internal Server Error", Config::get('errorcodes.HTTP_INTERNAL_SERVER_ERROR'));
+        }   
+    }
+
+    public function searchLoansView(Request $request) {
+        $pageNumber = 1;
+        if(array_key_exists('page', $request->input())) {
+            $pageNumber = $request->input('page');
+        }
+        $searchTerm = $request->input('term');
+        $response = $this->searchLoans($request);
+        $response = json_decode($response->content(), TRUE);
+        return view('searchloans', ['page_number' => $pageNumber, 'search_term' => $searchTerm, 'results' => $response['data']]);
+    }
+
+    public function searchBooksView(Request $request) {
+        $searchTerm = $request->input('term');
+        $response = $this->searchBooks($request);
+        $response = json_decode($response->content(), TRUE);
+        return view('searchbooks', ['search_term' => $searchTerm, 'results' => $response['data']]);
     }
 
     private function getUniqueBooks($books) {
@@ -140,7 +211,7 @@ class BookController extends Controller
     public function returnBooks(Request $request) {
         if(array_key_exists('isbns', $request->input()) 
            && array_key_exists('card_id', $request->input())) {
-            $isbns = json_decode($request->input('isbns'), true);
+            $isbns = $request->input('isbns');
             $card_id = $request->input('card_id');
             if(count($isbns) > Config::get('constants.max_borrower_quota')) {
                 return CommonMethods::generateErrorResponse(Config::get('errorcodes.INVALID_OPERATION'), "Cannot return more books than max borrow quota!");
@@ -158,18 +229,6 @@ class BookController extends Controller
             if(count($book_loans) != count($isbns)) {
                 return CommonMethods::generateErrorResponse(Config::get('errorcodes.INVALID_OPERATION'), "User has not borrowed one or more of the given books!");
             }
-            $book_loans = BookLoan::whereIn('isbn', $isbns)->whereNotNull('date_in')->get();
-            if(count($book_loans) > 0) {
-                return CommonMethods::generateErrorResponse(Config::get('errorcodes.BOOK_ALREADY_RETURNED'), "One or more of the given books has already been returned!");
-            }
-            $fines = DB::table('book_loans as bl')
-                ->join('fines as f', 'f.loan_id' , '=', 'bl.loan_id')
-                ->where('bl.card_id', '=', $card_id)
-                ->where('f.paid', '=', '0')
-                ->get();
-            if(count($fines) > 0) {
-                return CommonMethods::generateErrorResponse(Config::get('errorcodes.USER_FINE_PENDING'), "User has fines due!");
-            }
             try {
                 DB::transaction(function() use($card_id, $isbns) {
                     BookLoan::whereIn('isbn', $isbns)
@@ -185,6 +244,19 @@ class BookController extends Controller
         }
         else {
             return CommonMethods::generateErrorResponseWithArray("Invalid API Call", Config::get('errorcodes.HTTP_BAD_REQUEST_STATUS_CODE'));
+        }
+    }
+
+    public function checkInSearch(Request $request) {
+        $key = "";
+        $value = "";
+        if(array_key_exists('card_id', $request->input())) {
+            $key = 'card_id';
+            $value = $request->input($key);
+        }
+        elseif(array_key_exists('card_id', $request->input())) {
+            $key = 'bname';
+            $value = $request->input($key);
         }
     }
 }

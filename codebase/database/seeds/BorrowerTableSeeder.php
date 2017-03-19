@@ -17,7 +17,7 @@ class BorrowerTableSeeder extends Seeder
         {
             $borrower = new Borrower;
             $borrower->card_id = $record[0];
-            $borrower->ssn = $record[1];
+            $borrower->ssn = preg_replace("/[^0-9]/", "", $record[1]);
             $borrower->bname = $record[2] . " " . $record[3];
             $borrower->email = $record[4];
             $borrower->address = $record[5];

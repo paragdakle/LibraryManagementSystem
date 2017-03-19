@@ -11,15 +11,40 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'GenericController@getHome');
 
 //Book Controller Routes
-Route::get('/book', 'BookController@getBooks');
+Route::get('/books', 'BookController@getBooksView');
 
-Route::get('/book/search', 'BookController@searchBooks');
+Route::get('/api/books', 'BookController@getBooks');
 
-Route::post('/book/loan', 'BookController@loanBook');
+Route::get('/book', 'BookController@getBookView');
 
-Route::post('/book/return', 'BookController@returnBooks');
+Route::get('/book/search', 'BookController@searchBooksView');
+
+Route::get('/api/book/search', 'BookController@searchBooks');
+
+Route::post('/api/book/loan', 'BookController@loanBook');
+
+Route::post('/api/book/return', 'BookController@returnBooks');
+
+Route::get('/bookloans/search', 'BookController@searchLoansView');
+
+Route::get('/api/bookloans/search', 'BookController@searchLoans');
+
+//Borrower Routes
+Route::get('/users', 'BorrowerController@getBorrowersView');
+
+Route::get('/user/add', function() {
+    return view('adduser');
+});
+
+Route::post('/api/borrower/add', 'BorrowerController@addBorrower');
+
+Route::get('/api/borrowers', 'BorrowerController@getBorrowers');
+
+Route::get('/borrower', 'BorrowerController@getBorrowerView');
+
+Route::get('/api/borrower', 'BorrowerController@getBorrower');
+
+Route::post('/api/borrower/payfine', 'BorrowerController@payFines');
