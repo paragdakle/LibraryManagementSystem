@@ -1,4 +1,4 @@
-# Deployment script for autowell assistant server
+# Deployment script for Database project
 
 #######
 ## Steps to follow in the deployment
@@ -23,7 +23,7 @@ NGINX_CONFIG_FILENAME="dbproject"
 APACHE2_SERVICE_NAME="apache2"
 NGINX_DEFAULT_CONFIG_FILE_PATH="/etc/nginx/sites-enabled/default"
 NGINX_INIT_FILE="/etc/init.d/nginx"
-CONFIG_FILE_DIR="/etc/autowell"
+CONFIG_FILE_DIR="/etc/dbproject"
 LOAD_CONFIG_FILENAME="load_configuration.sh"
 
 # update package list to get information of newest versions of packages

@@ -9,7 +9,7 @@
         @section('head')
             <!-- CSS -->
             <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-            <link rel="stylesheet" href="assets/css/vendor/icon-sets.css">
+            <link rel="stylesheet" href="assets/css/icon-sets.css">
             <link rel="stylesheet" href="assets/css/main.css">
             <!-- GOOGLE FONTS -->
             <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
