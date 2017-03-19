@@ -74,14 +74,30 @@ $(document).ready(function() {
     /*----------------------------------*/
 
     $('#btn_loan').on('click', function() {
-        window.location = '/book/search?term=' + $('#loan_search_text_box').val();
+        if ($('#loan_search_text_box').val().trim() == "") {
+            showError("Kindly provide a search term!");
+        } else {
+            window.location = '/book/search?term=' + $('#loan_search_text_box').val();
+        }
     });
 
     $('#btn_return').on('click', function() {
-        window.location = '/bookloans/search?term=' + $('#return_search_text_box').val();
+        if ($('#return_search_text_box').val().trim() == "") {
+            showError("Kindly provide a search term!");
+        } else {
+            window.location = '/bookloans/search?term=' + $('#return_search_text_box').val();
+        }
     });
 
     $('#btn_checkout').on('click', function() {
+        if ($('#co_book_isbn_text_box').val().trim() == "") {
+            showError("Kindly provide a book isbn!");
+            return;
+        }
+        if ($('#co_card_no_text_box').val().trim() == "") {
+            showError("Kindly provide a user card number!");
+            return;
+        }
         $(this).attr('disabled', true);
         var initialText = $(this)[0].innerHTML;
         $(this)[0].innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
@@ -103,6 +119,14 @@ $(document).ready(function() {
     });
 
     $('#btn_checkin').on('click', function() {
+        if ($('#ci_book_isbn_text_box').val().trim() == "") {
+            showError("Kindly provide a book isbn!");
+            return;
+        }
+        if ($('#ci_card_no_text_box').val().trim() == "") {
+            showError("Kindly provide a user card number!");
+            return;
+        }
         $(this).attr('disabled', true);
         var initialText = $(this)[0].innerHTML;
         $(this)[0].innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
@@ -124,6 +148,10 @@ $(document).ready(function() {
     });
 
     $('#btn_checkin_bk').on('click', function() {
+        if (($('#card_no_text_box').length) && ($('#card_no_text_box').val().trim() == "")) {
+            showError("Kindly provide a card number!");
+            return;
+        }
         $(this).attr('disabled', true);
         var initialText = $(this)[0].innerHTML;
         $(this)[0].innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
@@ -151,6 +179,10 @@ $(document).ready(function() {
     });
 
     $('#btn_bk_checkout').on('click', function() {
+        if ($('#card_no_text_box').val().trim() == "") {
+            showError("Kindly provide a user card number!");
+            return;
+        }
         $(this).attr('disabled', true);
         var initialText = $(this)[0].innerHTML;
         $(this)[0].innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
@@ -219,6 +251,52 @@ $(document).ready(function() {
     });
 
     $('#btn_add').on('click', function() {
+        if ($('#user_name_text_box').val().trim() == "") {
+            showError("Kindly provide user name!");
+            return;
+        }
+        if ($('#user_ssn_text_box').val().trim() == "") {
+            showError("Kindly provide user ssn!");
+            return;
+        }
+        if ($('#user_ssn_text_box').val().length != 9) {
+            showError("Kindly provide a valid SSN!");
+            return;
+        }
+        if ($('#user_email_text_box').val().trim() == "") {
+            showError("Kindly provide user email!");
+            return;
+        } else {
+            var x = $('#user_email_text_box').val();
+            var atpos = x.indexOf("@");
+            var dotpos = x.lastIndexOf(".");
+            if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= x.length) {
+                showError("Kindly provide a valid user email!");
+                return;
+            }
+        }
+        if ($('#user_address_text_box').val().trim() == "") {
+            showError("Kindly provide user address!");
+            return;
+        }
+        if ($('#user_city_text_box').val().trim() == "") {
+            showError("Kindly provide user city!");
+            return;
+        }
+        if ($('#user_state_text_box').val().trim() == "") {
+            showError("Kindly provide user state!");
+            return;
+        }
+        if ($('#user_phone_text_box').val().trim() == "") {
+            showError("Kindly provide user phone number!");
+            return;
+        } else {
+            var isnum = /^\d+$/.test($('#user_phone_text_box').val());
+            if (!isnum) {
+                showError("Kindly provide a valid user phone number!");
+                return;
+            }
+        }
         $(this).attr('disabled', true);
         var initialText = $(this)[0].innerHTML;
         $(this)[0].innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';

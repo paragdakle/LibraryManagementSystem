@@ -10,7 +10,7 @@
 		<!-- SIDEBAR -->
 		<div class="sidebar">
 			<div class="brand">
-				<a href="index.html"><img src="assets/img/logo.png" alt="Klorofil Logo" class="img-responsive logo"></a>
+				<a href="/">Open Library</a>
 			</div>
 			<div class="sidebar-scroll">
 				<nav>
@@ -61,7 +61,7 @@
 								<div class="panel-body text-center">
 									<input type="text" class="form-control" id="user_name_text_box" placeholder="Enter name">
 									<br>
-									<input type="text" class="form-control" id="user_ssn_text_box" placeholder="Enter ssn">
+									<input type="text" class="form-control" maxlength="9" id="user_ssn_text_box" placeholder="Enter ssn (Eg. 123456789)">
 									<br>
 									<input type="text" class="form-control" id="user_email_text_box" placeholder="Enter email">
 									<br>

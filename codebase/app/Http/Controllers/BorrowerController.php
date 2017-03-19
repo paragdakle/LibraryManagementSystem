@@ -116,7 +116,12 @@ class BorrowerController extends Controller
         if($borrower) {
             $book_loans = BookLoan::where('card_id', $borrower->card_id)->orderBy('date_out', 'desc')->get();
             $borrower->loan_history = $book_loans;
-            $fines = DB::table('fines as f')->join('book_loans as bl', 'f.loan_id', '=', 'bl.loan_id')->select('f.*', 'bl.isbn')->where('bl.card_id', $borrower->card_id)->get();
+            $fines = DB::table('fines as f')
+                        ->join('book_loans as bl', 'f.loan_id', '=', 'bl.loan_id')
+                        ->select('f.*', 'bl.isbn')
+                        ->where('bl.card_id', $borrower->card_id)
+                        ->orderBy('bl.date_out', 'desc')
+                        ->get();
             $borrower->fine_history = $fines;
             return CommonMethods::generateSuccessResponse($borrower);
         }

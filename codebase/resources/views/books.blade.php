@@ -10,7 +10,7 @@
 		<!-- SIDEBAR -->
 		<div class="sidebar">
 			<div class="brand">
-				<a href="/"><img src="assets/img/logo.png" alt="Klorofil Logo" class="img-responsive logo"></a>
+				<a href="/">Open Library</a>
 			</div>
 			<div class="sidebar-scroll">
 				<nav>
@@ -40,9 +40,8 @@
 					<div id="navbar-menu" class="navbar-collapse collapse">
 						<form class="navbar-form navbar-left hidden-xs">
 							<div class="input-group">
-								<input type="text" value="" id="search_text_box" class="form-control" placeholder="Search library...">
-								<span class="input-group-btn"><button type="button" class="btn btn-primary" id="btn_loan">Loan</button></span>
-                                <span class="input-group-btn"><button type="button" class="btn btn-success" id="btn_return">Return</button></span>
+								<input type="text" value="" id="loan_search_text_box" class="form-control" placeholder="Search library...">
+								<span class="input-group-btn"><button type="button" class="btn btn-primary" id="btn_loan">Search</button></span>
 							</div>
 						</form>
 					</div>
