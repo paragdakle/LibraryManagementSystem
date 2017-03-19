@@ -3,8 +3,8 @@
  ********************/
 @font-face {
   font-family: 'Linearicons-Free';
-  src: url('../../fonts/linear/Linearicons-Free.eot?w118d&1432380630');
-  src: url('../../fonts/linear/Linearicons-Free.eot?&1432380630#iefixw118d') format("embedded-opentype"), url('../../fonts/linear/Linearicons-Free.woff2?w118d&1432380636') format("woff2"), url('../../fonts/linear/Linearicons-Free.woff?w118d&1432380630') format("woff"), url('../../fonts/linear/Linearicons-Free.ttf?w118d&1432380630') format("truetype"), url('../../fonts/linear/Linearicons-Free.svg?w118d&1432380630#Linearicons-Free') format("svg");
+  src: url('../fonts/linear/Linearicons-Free.eot?w118d&1432380630');
+  src: url('../fonts/linear/Linearicons-Free.eot?&1432380630#iefixw118d') format("embedded-opentype"), url('../fonts/linear/Linearicons-Free.woff2?w118d&1432380636') format("woff2"), url('../fonts/linear/Linearicons-Free.woff?w118d&1432380630') format("woff"), url('../fonts/linear/Linearicons-Free.ttf?w118d&1432380630') format("truetype"), url('../fonts/linear/Linearicons-Free.svg?w118d&1432380630#Linearicons-Free') format("svg");
   font-weight: normal;
   font-style: normal;
 }
