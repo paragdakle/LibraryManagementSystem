@@ -116,7 +116,7 @@ class BorrowerController extends Controller
         if($borrower) {
             $book_loans = BookLoan::where('card_id', $borrower->card_id)->orderBy('date_out', 'desc')->get();
             $borrower->loan_history = $book_loans;
-            $this->updateFines($borrower->card_id);
+            $this->updateFines();
             $fines = DB::table('fines as f')
                         ->join('book_loans as bl', 'f.loan_id', '=', 'bl.loan_id')
                         ->select('f.*', 'bl.isbn')
@@ -131,9 +131,8 @@ class BorrowerController extends Controller
         }
     }
 
-    private function updateFines($card_id) {
-        $loan_ids = BookLoan::where('card_id', $card_id)->whereNull('date_in')->select('loan_id')->get();
-        Fine::whereIn('loan_id', $loan_ids)->where('paid', 0)->delete();
+    private function updateFines() {
+        Fine::where('paid', 0)->delete();
         $today_timestamp = strtotime('today');
         $book_loans = BookLoan::whereNull('date_in')->where('due_date', '<', $today_timestamp)->get();
         foreach($book_loans as $book_loan) {

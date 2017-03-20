@@ -1716,6 +1716,7 @@ ul.activity-list>li .timestamp {
 .profile-right {
     float: right;
     width: 65%;
+    min-height: 400px;
     padding: 20px 25px;
 }
 

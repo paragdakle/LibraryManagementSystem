@@ -25,6 +25,7 @@ NGINX_DEFAULT_CONFIG_FILE_PATH="/etc/nginx/sites-enabled/default"
 NGINX_INIT_FILE="/etc/init.d/nginx"
 CONFIG_FILE_DIR="/etc/dbproject"
 LOAD_CONFIG_FILENAME="load_configuration.sh"
+MYSQL_CONF_FILE_PATH="/etc/mysql/my.cnf"
 
 # update package list to get information of newest versions of packages
 function update-package-list {
@@ -147,6 +148,11 @@ function copy-repo {
 }
 
 function initialize-database {
+    if [ -f $MYSQL_CONF_FILE_PATH ]; then
+        sudo sed -i '44ilower_case_table_names = 1' $MYSQL_CONF_FILE_PATH
+        sudo service mysql restart
+    fi
+    
     if [ -f $BASEDIR/database_initialization.sql ]; then
         echo "Enter your mysql password on prompt"
         mysql -u root -p < $BASEDIR/database_initialization.sql
