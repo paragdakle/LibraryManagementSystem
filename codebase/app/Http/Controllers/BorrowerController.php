@@ -116,6 +116,7 @@ class BorrowerController extends Controller
         if($borrower) {
             $book_loans = BookLoan::where('card_id', $borrower->card_id)->orderBy('date_out', 'desc')->get();
             $borrower->loan_history = $book_loans;
+            $this->updateFines($borrower->card_id);
             $fines = DB::table('fines as f')
                         ->join('book_loans as bl', 'f.loan_id', '=', 'bl.loan_id')
                         ->select('f.*', 'bl.isbn')
@@ -130,11 +131,38 @@ class BorrowerController extends Controller
         }
     }
 
+    private function updateFines($card_id) {
+        $loan_ids = BookLoan::where('card_id', $card_id)->whereNull('date_in')->select('loan_id')->get();
+        Fine::whereIn('loan_id', $loan_ids)->where('paid', 0)->delete();
+        $today_timestamp = strtotime('today');
+        $book_loans = BookLoan::whereNull('date_in')->where('due_date', '<', $today_timestamp)->get();
+        foreach($book_loans as $book_loan) {
+            $time_diff = $today_timestamp - $book_loan->due_date;
+            $hours = floor($time_diff / (60 * 60 * 24));
+            if($hours > 0) {
+                $fine_amount = $hours * Config::get('constants.fine_per_day');
+                $fine = new Fine;
+                $fine->loan_id = $book_loan->loan_id;
+                $fine->fine_amt = $fine_amount;
+                $fine->paid = false;
+                $fine->save();
+            }
+        }
+    }
+
     public function getBorrowerView(Request $request) {
         try {
             $response = $this->getBorrower($request);
             $response = json_decode($response->content(), TRUE);
-            return view('profile', ['user' => $response['data']]);
+            $fineTotal = 0;
+            if(array_key_exists('fine_history', $response['data'])) {
+                foreach ($response['data']['fine_history'] as $fine) {
+                    if($fine['date_paid'] == NULL) {
+                        $fineTotal += $fine['fine_amt'];
+                    }
+                }
+            }
+            return view('profile', ['user' => $response['data'], 'fine_total' => $fineTotal]);
         }
         catch(Exception $e) {
             return CommonMethods::generateErrorResponseWithArray("Internal Server Error", Config::get('errorcodes.HTTP_INTERNAL_SERVER_ERROR'));

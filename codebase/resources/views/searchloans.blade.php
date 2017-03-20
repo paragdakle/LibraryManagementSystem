@@ -80,7 +80,7 @@
 												<td>{{ date('m/d/y', $result['date_out']) }}</td>
 												<td>{{ date('m/d/y', $result['due_date']) }}</td>
 												@if($result['date_in'] == null)
-												<td><span class="input-group-btn"><button type="button" class="btn btn-primary" data-card="{{ $result['card_id']}}" data-isbn="{{ $result['isbn']}}" id="btn_checkin_bk">Checkin</button></span></td>
+												<td><span class="input-group-btn"><button type="button" class="btn btn-primary" data-card="{{ $result['card_id']}}" data-isbn="{{ $result['isbn']}}" id="{{ 'btn_checkin_bk_' . $result['isbn'] }}">Checkin</button></span></td>
 												@else
 													<td>{{ date('m/d/y', $result['date_in']) }}</td>
 												@endif

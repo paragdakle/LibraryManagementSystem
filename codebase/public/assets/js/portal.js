@@ -147,7 +147,7 @@ $(document).ready(function() {
         $(this)[0].innerHTML = initialText;
     });
 
-    $('#btn_checkin_bk').on('click', function() {
+    $('[id^="btn_checkin_bk"]').on('click', function() {
         if (($('#card_no_text_box').length) && ($('#card_no_text_box').val().trim() == "")) {
             showError("Kindly provide a card number!");
             return;
@@ -237,6 +237,7 @@ $(document).ready(function() {
             .success(function(data) {
                 if (data.status == "success") {
                     showMessage(data.data);
+                    window.location.reload();
                 }
             })
             .error(function(data) {

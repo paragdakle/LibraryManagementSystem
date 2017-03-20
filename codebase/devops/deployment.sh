@@ -228,6 +228,15 @@ EOF
     fi
 }
 
+function setup-cron {
+    crontab -l > mycron
+    #echo new cron into cron file
+    echo "* * * * * $SERVER_PATH/artisan schedule:run >> /dev/null 2>&1" >> mycron
+    #install new cron file
+    crontab mycron
+    rm mycron
+}
+
 #this function will install all the dependencies as well as start the Subscription Server
 function install {
     echo "Building Server...";
@@ -236,6 +245,7 @@ function install {
     configure-repo;
     configure-server;
     start-server;
+    setup-cron;
 }
 
 function remove-deps {

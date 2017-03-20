@@ -92,7 +92,12 @@
 								<div class="custom-tabs-line tabs-line-bottom left-aligned">
 									<ul class="nav" role="tablist">
 										<li class="active"><a href="#tab-bottom-left1" role="tab" data-toggle="tab">Borrowed Books</a></li>
-										<li><a href="#tab-bottom-left2" role="tab" data-toggle="tab">Fines</a></li>
+										<li>
+											<a href="#tab-bottom-left2" role="tab" data-toggle="tab">Fines  
+											@if($fine_total > 0)
+												<span class="badge">${{ $fine_total }}</span>
+											@endif
+											</a></li>
 									</ul>
 								</div>
 								<div class="tab-content">
@@ -114,7 +119,7 @@
 														<td>{{ date('m/d/y', $item['date_out']) }}</td>
 														<td>{{ date('m/d/y', $item['due_date']) }}</td>
 														@if($item['date_in'] == null)
-														<td><span class="input-group-btn"><button type="button" class="btn btn-primary" data-card="{{ $user['card_id']}}" data-isbn="{{ $item['isbn']}}" id="btn_checkin_bk">Checkin</button></span></td>
+														<td><span class="input-group-btn"><button type="button" class="btn btn-primary" data-card="{{ $user['card_id']}}" data-isbn="{{ $item['isbn']}}" id="{{ 'btn_checkin_bk_' . $item['isbn'] }}">Checkin</button></span></td>
 														@else
 															<td>{{ date('m/d/y', $item['date_in']) }}</td>
 														@endif
