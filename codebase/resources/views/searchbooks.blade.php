@@ -41,7 +41,7 @@
 					<div id="navbar-menu" class="navbar-collapse collapse">
 						<form class="navbar-form navbar-left hidden-xs">
 							<div class="input-group">
-								<input type="text" value="{{ $search_term }}" id="search_text_box" class="form-control" placeholder="Search library...">
+								<input type="text" value="{{ $search_term }}" id="loan_search_text_box" class="form-control" placeholder="Search library...">
 								<span class="input-group-btn"><button type="button" class="btn btn-primary" id="btn_loan">Search</button></span>
 							</div>
 						</form>
